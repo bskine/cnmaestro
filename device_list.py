@@ -3,14 +3,15 @@ import urllib3
 from pprint import pprint
 import datetime
 import time
+from shared import creds
 
 urllib3.disable_warnings()
 
 
 def access_token():
-    url = "https://10.26.15.60/api/v1/access/token"
+    url = f"{creds.base_url}access/token"
 
-    payload = 'grant_type=client_credentials&client_id=FeH7JaeseMj2rJm5&client_secret=4SFsCFAnFmUpFsio8kNO6f78MGjp5L'
+    payload = f'grant_type=client_credentials&{creds.client_id}'
     headers = {
         'Accept': 'application/json',
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -27,7 +28,7 @@ def device_list():
        by the details() function."""
 
     token = access_token()
-    url = "https://10.26.15.60/api/v1/devices?network=Alpine&type=ptp"
+    url = f"{creds.base_url}devices?network=Alpine&type=ptp"
     payload = {}
     headers = {
         'Accept': 'application/json',
@@ -58,9 +59,8 @@ def performance():
     token = access_token()
     dmx = details()
     #    print(dmx)
-    https = "https://10.26.15.60/api/v1/devices/"
+    https = f"{creds.base_url}devices/"
     for i in dmx:
-        #       TODO:  add try/except for offline units
         mac = i['MAC']
         print(mac)
         name = i['name']
@@ -92,5 +92,5 @@ def performance():
 
 if __name__ == "__main__":
     performance()
-#    pprint(device_list())
-#    pprint(details())
+    pprint(device_list())
+    pprint(details())
